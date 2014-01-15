@@ -8,7 +8,6 @@
 	<meta name="description" content="Alternatieve studentenvereniging Karpe Noktem uit Nijmegen">
 {% block stylesheets %}
 	<link rel="stylesheet" type="text/css" href="css/base.css">
-	<link rel="stylesheet" type="text/css" href="css/jquery-ui.css">
 {% endblock stylesheets %}
 {% block scripts %}
 	<script type="text/javascript" src="js/jquery.min.js"></script>
@@ -16,6 +15,24 @@
 	<script type="text/javascript" src="js/jquery-ui.min.js"></script>
 	<script type="text/javascript" src="js/common.js"></script>
 {% endblock scripts %}
+	<script>{# This script is not external, it's just here to load more CSS. Thus not included in the scripts block.
+	           Additionally, this should always be after the last script.
+	           This little script postpones loading the jQuery UI CSS until after most of the page is loaded #}
+
+		(function () {
+			function loadCSS() {
+				var stylesheet = document.createElement('link');
+				stylesheet.href = 'css/jquery-ui.css';
+				stylesheet.rel = 'stylesheet';
+				document.getElementsByTagName('link')[0].parentNode.appendChild(stylesheet);
+			}
+			if (window.addEventListener) {
+				window.addEventListener('DOMContentLoaded', loadCSS);
+			} else {
+				window.attachEvent('onload', loadCSS);
+			}
+		})();
+	</script>
 {% endblock head %}
 </head>
 <body>
