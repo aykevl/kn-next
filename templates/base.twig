@@ -21,10 +21,13 @@
 
 		(function () {
 			function loadCSS() {
-				var stylesheet = document.createElement('link');
-				stylesheet.href = 'css/jquery-ui.css';
-				stylesheet.rel = 'stylesheet';
-				document.getElementsByTagName('link')[0].parentNode.appendChild(stylesheet);
+				var stylesheets = "css/jquery-ui.css{% block stylesheets_deferred %}{% endblock %}".split(',');
+				for (var i=0; i<stylesheets.length; i++) {
+					var stylesheet = document.createElement('link');
+					stylesheet.href = stylesheets[i];
+					stylesheet.rel = 'stylesheet';
+					document.getElementsByTagName('link')[0].parentNode.appendChild(stylesheet);
+				}
 			}
 			if (window.addEventListener) {
 				window.addEventListener('DOMContentLoaded', loadCSS);

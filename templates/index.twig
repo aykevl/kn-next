@@ -7,8 +7,9 @@
 	<link rel="stylesheet" type="text/css" href="css/agenda.css" />
 	<link rel="stylesheet" type="text/css" href="css/index.css" />
 	<link rel="stylesheet" type="text/css" href="css/nivo-slider.css" />
-	<link rel="stylesheet" type="text/css" href="css/nivo-slider/default.css" media="screen" />
 {% endblock stylesheets %}
+
+{% block stylesheets_deferred %},css/nivo-slider/default.css{% endblock %}
 
 {% block scripts %}
 {{ parent() }}
