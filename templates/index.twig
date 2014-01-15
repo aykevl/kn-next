@@ -2,14 +2,18 @@
 
 {# no title defined #}
 
-{% block head %}
+{% block stylesheets %}
 {{ parent() }}
-<script type="text/javascript" src="js/jquery.nivo.slider.pack.js"></script>
-<link rel="stylesheet" type="text/css" href="css/agenda.css" />
-<link rel="stylesheet" type="text/css" href="css/index.css" />
-<link rel="stylesheet" type="text/css" href="css/nivo-slider.css" />
-<link rel="stylesheet" href="css/nivo-slider/default.css" type="text/css" media="screen" />
-{% endblock head %}
+	<link rel="stylesheet" type="text/css" href="css/agenda.css" />
+	<link rel="stylesheet" type="text/css" href="css/index.css" />
+	<link rel="stylesheet" type="text/css" href="css/nivo-slider.css" />
+	<link rel="stylesheet" type="text/css" href="css/nivo-slider/default.css" media="screen" />
+{% endblock stylesheets %}
+
+{% block scripts %}
+{{ parent() }}
+	<script type="text/javascript" src="js/jquery.nivo.slider.pack.js"></script>
+{% endblock scripts %}
 
 {% block overMenu %}
 {% endblock overMenu %}
