@@ -2,6 +2,23 @@ var headerHeight = 400;
 var collapsedHeaderHeight = 70;
 var headerFixedThreshold = headerHeight - collapsedHeaderHeight;
 
+function getCsrftoken() {
+	if ($.cookie('csrftoken')) {
+		return $.cookie('csrftoken');
+	} else {
+		// http://stackoverflow.com/a/12502559/559350
+		// generate 32 pseudo-random characters
+		var csrftoken = '';
+		for (var i=0; i<4; i++) {
+			csrftoken += Math.random().toString(36).slice(2, 10);
+		}
+		// emulate default Django behavior
+		// https://github.com/django/django/blob/master/django/middleware/csrf.py#L182
+		$.cookie('csrftoken', csrftoken, {path: '/', expires: 7*52})
+		return csrftoken;
+	}
+}
+
 // Menubar half-fixed
 if (! $.browser.mobile) {
 	$(window).scroll(function(e) {
@@ -46,6 +63,23 @@ $(document).ready(function() {
 			top: collapsedHeaderHeight
 		});
 	}
+
+	$('#csrfmiddlewaretoken').val(getCsrftoken());
+
+	$(document.getElementById('loginButtonLink')).bind('click', function (event) {
+		var loginButton = $('#loginButton');
+		loginButton.toggleClass('open');
+		event.preventDefault();
+		event.stopPropagation();
+	});
+
+	$(document.body).bind('click', function (event) {
+		$('#loginButton').removeClass('open');
+	});
+
+	$('#loginWindow').bind('click', function (event) {
+		event.stopPropagation();
+	});
 });
 
 function collapseHeader(img) {
@@ -82,37 +116,6 @@ function collapseHeader(img) {
 		$('#content').css({
 			top: collapsedHeaderHeight
 		});
-	}
-}
-
-function showLoginWindow() {
-	var doShowWindow = function () {
-		$("#loginWindow").dialog({
-			draggable: false,
-			height: 325,
-			width: 325,
-			modal: true,
-			position: {
-				my: 'right top',
-				at: 'right bottom',
-				of: $('#navigator')
-			},
-			resizable: false,
-			title: 'Inloggen voor leden'
-		});
-	}
-	// Check if we are on the right hostname, then fetch a cookie with
-	// a CSRF-token if not redirect to the standard login page.
-	// If we have a CSRF-token, show the login window
-	if (!$.browser.mobile && window.location.hostname.match(/(^|\.)(karpenoktem\.(nl|com)|kn\.cx)$/i)) {
-		if (!$.cookie('csrftoken')) {
-			$.get('/accounts/login/', {}, doShowWindow); // XXX dit is nog niet niet getest!
-			return;
-		} else {
-			doShowWindow();
-		}
-	} else {
-		window.location.href = 'https://karpenoktem.nl/accounts/login/';
 	}
 }
 
